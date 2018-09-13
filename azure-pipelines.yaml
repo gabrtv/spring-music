@@ -1,0 +1,23 @@
+
+queue: Hosted Linux Preview
+variables:
+  app.name: spring-music
+
+steps:
+- task: AzureCLI@1
+  displayName: Login to Azure
+  inputs:
+    azureSubscription: $(az.subid)
+    scriptLocation: inlineScript
+    inlineScript: |
+      az aks get-credentials -n $(aks.name) -g $(aks.rg)
+      az acr login -n $(acr.name) -g $(acr.rg)
+- script: |
+    docker build -t $(registry.host)/$(registry.org)/$(app.name):$BUILD_BUILDID .
+    docker push $(registry.host)/$(registry.org)/$(app.name):$BUILD_BUILDID
+  displayName: Build and push
+  workingDirectory: $(Build.SourcesDirectory)
+- script: |
+    helm upgrade --install --reuse-values spring-music charts/spring-music --set image.tag=$BUILD_BUILDID
+  displayName: Helm upgrade
+  workingDirectory: $(Build.SourcesDirectory)
