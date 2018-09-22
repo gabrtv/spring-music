@@ -18,6 +18,7 @@ steps:
   displayName: Build and push
   workingDirectory: $(Build.SourcesDirectory)
 - script: |
+    helm init --upgrade
     helm upgrade --install --reuse-values spring-music charts/spring-music --set image.tag=$BUILD_BUILDID
   displayName: Helm upgrade
   workingDirectory: $(Build.SourcesDirectory)
