@@ -23,7 +23,7 @@ ingress:
     # kubernetes.io/tls-acme: "true"
   path: /
   hosts:
-    - spring-music.6b4a9065df8d416f92fd.eastus.aksapp.io
+    - spring-music.2589c49370d64d0cb134.eastus.aksapp.io
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
